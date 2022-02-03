@@ -1,2 +1,5 @@
 # the output directory
 build
+
+# my VS Code settings
+.vscode
