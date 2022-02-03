@@ -2,6 +2,9 @@
 
 Ukázka toho, co se dá zvládnout po dokončení kurzu BI-PA1.21 na FIT ČVUT.
 
+Předem upozorňuji, že můj styl programování v jazyce C se mírně liší od
+toho oficiálně prezentovaného v PA1.
+
 ## Kompilace a spuštění
 
 Nejjednodušší je zkompilovat program skriptem `build.sh`. Ten
