@@ -15,7 +15,8 @@ ve stejném adresáři, ve kterém si vytvoří pracovní složku `.saves`.
 
 Pokud váš systém nemá bash, nebo gcc, budete muset program zkompilovat
 sami. V takovém případě je potřeba kompilátoru předat informaci o tom,
-že direktiva `#include "soubor"` má hledat ve složce `src`. Pokud ani potom
+že direktiva `#include "soubor"` má hledat ve složce `src` a následně
+zkompilovat všechny `.c` soubory v tomto adresáři. Pokud ani potom
 program nepůjde zkompilovat, je to nejspíš tím že používá GNU rozšíření
 standartní knihovny (především ta, která popisuje předmět PA1, jako
 `getline()`, nebo `strdup()`).
