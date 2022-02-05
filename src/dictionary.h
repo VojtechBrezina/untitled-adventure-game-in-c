@@ -9,7 +9,7 @@
 // in general, but mainly for serialization.
 // Implementd as a binary search tree.
 // An empty dictionary is represented as NULL.
-typedef struct dictionary{
+typedef struct Dictionary{
     // The string identifier.
     const char *key;
 
@@ -17,7 +17,7 @@ typedef struct dictionary{
     void *data;
 
     // The left and right children.
-    struct dictionary *left, *right;
+    struct Dictionary *left, *right;
 } T_DICTIONARY;
 
 // Insert (or replace) the value at the key.
@@ -26,7 +26,8 @@ typedef struct dictionary{
 void *DictionaryInsert(T_DICTIONARY **dictionary, const char *key, void *data);
 
 // Finds the node that matches the given key the closest and returns it.
-// Useful for inserting or entering shortened commands.
+// Useful for entering shortened commands. Still returns NULL
+// for an empty dictionary though.
 T_DICTIONARY *DictionarySearch(T_DICTIONARY **dictionary, const char *key);
 
 // Find the give key and return the associated data or NULL if not found.
@@ -47,5 +48,10 @@ T_DICTIONARY *DictionaryDeserialize(FILE *source);
 
 // Store a dictionary to an output stream (when saving a game).
 void *DictionarySerialize(FILE *destination);
+
+// Ballance the tree to optimize the speed of subsequent searches.
+// Useful for mostly immutable dictionaries that are searched
+// frequently. (and are potentialy built from unevenly distributed data)
+void DictionaryOptimize(T_DICTIONARY **dictionary);
 
 #endif // DICTIONARY_H
