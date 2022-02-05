@@ -1,6 +1,10 @@
 #ifndef GAME_H
 #define GAME_H
 
+// The version of the game that is used to
+// determine save compatibility.
+#define GAME_VERSION "v0.0.0"
+
 // This struct holds the entire game state.
 typedef struct{
 
