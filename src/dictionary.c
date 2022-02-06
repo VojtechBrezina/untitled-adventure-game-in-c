@@ -99,6 +99,27 @@ void *DictionaryInsert(T_DICTIONARY **dictionary, const char *key, void *data){
     return NULL; // For the warnings (I want the ifs to look the way they do)
 }
 
+void **DictionaryGet(T_DICTIONARY **dictionary, const char *key){
+    // Once again recursion will be the nicer way. It is similar
+    // to the insert function, but no new node can be created
+    // this way.
+    if(!*dictionary)
+        return NULL;
+
+    int cmp = strcmp(key, (*dictionary)->key);
+
+    if(cmp == 0)
+        return &(*dictionary)->data;
+
+    if(cmp < 0)
+        return DictionaryGet((*dictionary)->left, key);
+
+    if(cmp > 0)
+        return DictionaryGet((*dictionary)->right, key);
+
+    return NULL; // For the warnings (I want the ifs to look the way they do)
+}
+
 // A recursive helper function for the first step of optimization.
 void constructInOrderArray(T_DICTIONARY *dictionary, T_DYNAMIC_ARRAY *target){
     if(!dictionary)

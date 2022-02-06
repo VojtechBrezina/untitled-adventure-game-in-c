@@ -9,6 +9,12 @@
 // in general, but mainly for serialization.
 // Implementd as a binary search tree.
 // An empty dictionary is represented as NULL.
+// Most of the functions are implemented recursively,
+// but that should be fine, because after calling
+// DictionaryOptimize, the maximum depth should be
+// around 50 as 2^50 nodes won't probably fit in the
+// memory anyway and you cannot have more than 2^64
+// unique pointers on most platforms even if they did.
 typedef struct Dictionary{
     // The string identifier.
     const char *key;
@@ -30,8 +36,9 @@ void *DictionaryInsert(T_DICTIONARY **dictionary, const char *key, void *data);
 // for an empty dictionary though.
 T_DICTIONARY *DictionarySearch(T_DICTIONARY **dictionary, const char *key);
 
-// Find the give key and return the associated data or NULL if not found.
-void *DictionaryGet(T_DICTIONARY **dictionary, const char *key);
+// Find the given key and return a pointer to the associated data for
+// read/write access, or NULL if not found.
+void **DictionaryGet(T_DICTIONARY **dictionary, const char *key);
 
 // Similar to Get but the corresponding node gets deleted.
 // It is the responsibility of the caller to dispose of the data.
@@ -43,11 +50,13 @@ void *DictionaryRemove(T_DICTIONARY **dictionary, const char *key);
 // clear method wouldn't work as the data cannot always be just freed.
 void *DictionaryRemoveSomething(T_DICTIONARY **dictionary);
 
+/* TODO: these will require a callback for deserializing the data...
 // Construct a dictionary from an input stream (when loading a game).
 T_DICTIONARY *DictionaryDeserialize(FILE *source);
 
 // Store a dictionary to an output stream (when saving a game).
 void *DictionarySerialize(FILE *destination);
+*/
 
 // Ballance the tree to optimize the speed of subsequent searches.
 // Useful for mostly immutable dictionaries that are searched
