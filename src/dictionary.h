@@ -51,7 +51,11 @@ void *DictionarySerialize(FILE *destination);
 
 // Ballance the tree to optimize the speed of subsequent searches.
 // Useful for mostly immutable dictionaries that are searched
-// frequently. (and are potentialy built from unevenly distributed data)
+// frequently as it is too slow to be performed regularly.
+// NOTE: did't realize this at first, but really large datasests
+// benefit from multiple optimizations during the population itself.
+// An example that works with most linux installs should be the state
+// at tag v0.0.1
 void DictionaryOptimize(T_DICTIONARY **dictionary);
 
 #endif // DICTIONARY_H

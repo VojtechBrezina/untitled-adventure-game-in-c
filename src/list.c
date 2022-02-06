@@ -112,3 +112,13 @@ int ListHasItems(T_LIST *list){
 
     return !!list->head;
 }
+
+T_DYNAMIC_ARRAY *ListToDynamicArray(T_LIST *list){
+    T_DYNAMIC_ARRAY *result = malloc(sizeof(T_DYNAMIC_ARRAY));
+    DynamicArrayInit(result);
+
+    for(T_LIST_NODE *iter = list->head; iter; iter = iter->next)
+        DynamicArrayAppend(result, iter->data);
+
+    return result;
+}

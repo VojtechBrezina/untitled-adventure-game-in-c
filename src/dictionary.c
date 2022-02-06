@@ -3,6 +3,9 @@
 
 #include "dictionary.h"
 
+// Used in the optimization code.
+#include "dynamic_array.h"
+
 // Check which string has more matching characters. Useful for
 // the search function. Can stay inside this file.
 const char *getCloserString(const char *target, const char *a, const char *b){
@@ -96,6 +99,45 @@ void *DictionaryInsert(T_DICTIONARY **dictionary, const char *key, void *data){
     return NULL; // For the warnings (I want the ifs to look the way they do)
 }
 
-void DictionaryOptimize(T_DICTIONARY **dictionary){
+// A recursive helper function for the first step of optimization.
+void constructInOrderArray(T_DICTIONARY *dictionary, T_DYNAMIC_ARRAY *target){
+    if(!dictionary)
+        return;
 
+    constructInOrderArray(dictionary->left, target);
+    DynamicArrayAppend(target, dictionary);
+    constructInOrderArray(dictionary->right, target);
+}
+
+// A helper function for the second optimization step
+T_DICTIONARY *rebuildDictionary(T_DYNAMIC_ARRAY *source, int first, int last){
+    // If the indexes cross, stop the recursion
+    if(last < first)
+        return NULL;
+
+    // Make the middle one the root to ensure the same ammount of nodes
+    // on both sides, then rebuild the subtrees.
+    int middle = first + (last - first) / 2;
+    T_DICTIONARY *result = source->data[middle];
+    result->left = rebuildDictionary(source, first, middle - 1);
+    result->right = rebuildDictionary(source, middle + 1, last);
+    return result;
+}
+
+void DictionaryOptimize(T_DICTIONARY **dictionary){
+    // If it is empty, it is plenty optimized
+    // (and could break at least step 2)
+    if(!*dictionary)
+        return;
+
+    T_DYNAMIC_ARRAY inOrderArray;
+    DynamicArrayInit(&inOrderArray);
+
+    // Step 1: get an ordered array of the nodes
+    constructInOrderArray(*dictionary, &inOrderArray);
+
+    // Step 2: reorganize the nodes optimaly
+    *dictionary = rebuildDictionary(&inOrderArray, 0, inOrderArray.size - 1);
+
+    DynamicArrayDone(&inOrderArray);
 }

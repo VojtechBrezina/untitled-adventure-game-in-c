@@ -1,6 +1,9 @@
 #ifndef LIST_H
 #define LIST_H
 
+// Expose the dynamic array type for ListToDynamicArray
+#include "dynamic_array.h"
+
 // A double linked list node that holds arbitrary data
 typedef struct ListNode{
     void *data;
@@ -34,5 +37,9 @@ void ListInsert(T_LIST *list, void *data, int index);
 // have enought of those elsewhere. (mainly serialization/
 // deserialization)
 int ListHasItems(T_LIST *list);
+
+// Flatten the list into a newly created dynamic array. The data
+// pointers are simply coppied.
+T_DYNAMIC_ARRAY *ListToDynamicArray(T_LIST *list);
 
 #endif // LIST_H

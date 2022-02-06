@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
 #include "dynamic_array.h"
 
@@ -40,7 +41,7 @@ void *DynamicArrayFastRemove(T_DYNAMIC_ARRAY *array, int index){
     return value;
 }
 
-void ArrayDone(T_DYNAMIC_ARRAY *array){
+void DynamicArrayDone(T_DYNAMIC_ARRAY *array){
     free(array->data);
     array->data = NULL;
     array->size = array->capacity = 0;

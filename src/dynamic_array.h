@@ -30,6 +30,6 @@ void *DynamicArrayFastRemove(T_DYNAMIC_ARRAY *array, int index);
 // which has to be performed manually as the arbitrary nature of the
 // data doesn't make anything more efficient possible. It is assumed
 // the data has already been destroyed by the caller.
-void ArrayDone(T_DYNAMIC_ARRAY *array);
+void DynamicArrayDone(T_DYNAMIC_ARRAY *array);
 
 #endif // DYNAMIC_ARRAY_H

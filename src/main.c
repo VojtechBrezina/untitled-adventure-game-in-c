@@ -16,17 +16,25 @@ void MainMenuInit(){
 }
 
 int main(void){
+    // Follows a little utility for playing with the
+    // dictionary using the "/usr/share/dict/words"
+    // file. Thi is messy and serves no purpose in
+    // the actual project, but will be archived under
+    // the v0.0.1 tag.
 
     T_DICTIONARY *d = NULL;
     char *l = NULL;
     size_t n = 0, r;
-    //FILE *f = fopen("test.txt", "r");
+    int count = 0;
     FILE *f = fopen("/usr/share/dict/words", "r");
     while((r = getline(&l, &n, f)) != -1){
         l[r - 1] = '\0';
         DictionaryInsert(&d, l, NULL);
         l = NULL;
         n = 0;
+        count++;
+        if(count % 1000 == 0)
+            DictionaryOptimize(&d);
     }
     fclose(f);
     free(l);
@@ -37,7 +45,7 @@ int main(void){
     while((r = getline(&l, &n, stdin)) != -1){
         n = 0;
         l[r - 1] = '\0';
-        char *res = DictionarySearch(&d, l)->key;
+        const char *res = DictionarySearch(&d, l)->key;
         if(res) printf("> %s\n\n", res);
         else printf("> NULL\n\n");
         l = NULL;
