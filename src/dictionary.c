@@ -112,10 +112,10 @@ void **DictionaryGet(T_DICTIONARY **dictionary, const char *key){
         return &(*dictionary)->data;
 
     if(cmp < 0)
-        return DictionaryGet((*dictionary)->left, key);
+        return DictionaryGet(&(*dictionary)->left, key);
 
     if(cmp > 0)
-        return DictionaryGet((*dictionary)->right, key);
+        return DictionaryGet(&(*dictionary)->right, key);
 
     return NULL; // For the warnings (I want the ifs to look the way they do)
 }
@@ -162,3 +162,5 @@ void DictionaryOptimize(T_DICTIONARY **dictionary){
 
     DynamicArrayDone(&inOrderArray);
 }
+
+

@@ -46,8 +46,9 @@ void *DictionaryRemove(T_DICTIONARY **dictionary, const char *key);
 
 // Similar to Remove, but the key is undefined. Removes nothing from
 // an empty instance and returns NULL in that case. This can be called
-// repeatedly until NULL is returned to clear the dictionary. A simple
-// clear method wouldn't work as the data cannot always be just freed.
+// repeatedly until (!*dictionary) evaluates to true to clear the
+// dictionary. A simple clear method wouldn't work as the data cannot
+// always be just freed.
 void *DictionaryRemoveSomething(T_DICTIONARY **dictionary);
 
 /* TODO: these will require a callback for deserializing the data...
