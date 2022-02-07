@@ -3,7 +3,7 @@
 
 // The version of the game that is used to
 // determine save compatibility.
-#define GAME_VERSION "v0.0.0"
+#define GAME_VERSION "v0.0.1"
 
 // This struct holds the entire game state.
 typedef struct{

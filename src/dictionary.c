@@ -165,6 +165,7 @@ void DictionaryOptimize(T_DICTIONARY **dictionary){
 
 void *DictionaryRemove(T_DICTIONARY **dictionary, const char *key){
     // Still technically fits into one screen :) (on my device that is)
+    // EDIT: Ok, It is a mess, but I swear it will be an exception.
     if(!*dictionary)
         return NULL;
 
@@ -174,30 +175,24 @@ void *DictionaryRemove(T_DICTIONARY **dictionary, const char *key){
         void *result = (*dictionary)->data;
         // Type cast to remove const, not sure about this...
         free((char *)(*dictionary)->key);
+        T_DICTIONARY *left = (*dictionary)->left;
+        T_DICTIONARY *right = (*dictionary)->right;
+        free(*dictionary);
         // If they are both NULL, it will be set to right, that is to NULL.
-        if(!(*dictionary)->left){
-            free(*dictionary);
-            *dictionary = (*dictionary)->right;
-        }else if(!(*dictionary)->right){
-            free(*dictionary);
-            *dictionary = (*dictionary)->left;
+        if(left){
+            *dictionary = right;
+        }else if(right){
+            *dictionary = left;
         }else{
-            T_DICTIONARY *what;
-            T_DICTIONARY **where = dictionary;
+            T_DICTIONARY *what, **where;
             if(key[0] % 2){ // Trying to make it at least somewhat balanced
-                what = (*dictionary)->right;
-                T_DICTIONARY *left = (*dictionary)->left;
-                free(*dictionary);
+                what = right;
                 *dictionary = left;
-                while(*where)
-                    where = &(*where)->right;
+                for(where = &right; *where; where = &(*where)->right);
             }else{
-                what = (*dictionary)->left;
-                T_DICTIONARY *right = (*dictionary)->right;
-                free(*dictionary);
+                what = left;
                 *dictionary = right;
-                while(*where)
-                    where = &(*where)->left;
+                for(where = &left; *where; where = &(*where)->left);
             }
             *where = what;
         }
@@ -211,6 +206,8 @@ void *DictionaryRemove(T_DICTIONARY **dictionary, const char *key){
     return NULL; // For the warnings (I want the ifs to look the way they do)
 }
 
+// The actual implementation needs to differentiate between success
+// and failure.
 int removeSomethingImpl(T_DICTIONARY **dictionary, void **value){
     if(!(*dictionary))
         return 0;
