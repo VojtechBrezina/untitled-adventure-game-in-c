@@ -42,6 +42,7 @@ int main(void){
     while((r = getline(&l, &n, f)) != -1){
         l[r - 1] = '\0';
         DictionaryInsert(&d, l, NULL);
+        free(l);
         l = NULL;
         n = 0;
         count++;
@@ -84,9 +85,13 @@ int main(void){
                 break;
         }
 
+        free(l);
         l = NULL;
     }
+    free(l);
 
+    while(d)
+        DictionaryRemoveSomething(&d);
 
 
     T_GAME *game;

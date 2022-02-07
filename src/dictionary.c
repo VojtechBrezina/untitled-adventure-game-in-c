@@ -74,7 +74,7 @@ void *DictionaryInsert(T_DICTIONARY **dictionary, const char *key, void *data){
     if(!(*dictionary)){
         *dictionary = malloc(sizeof(T_DICTIONARY));
         (*dictionary)->data = data;
-        (*dictionary)->key = key;
+        (*dictionary)->key = strdup(key);
         (*dictionary)->left = (*dictionary)->right = NULL;
         return NULL;
     }
@@ -164,33 +164,39 @@ void DictionaryOptimize(T_DICTIONARY **dictionary){
 }
 
 void *DictionaryRemove(T_DICTIONARY **dictionary, const char *key){
-    // Basicaly a mutation of the get function, This should probably
-    // be merged, but that will have to wait for now.
-    // Still fits into one screen :) (on my device that is)
+    // Still technically fits into one screen :) (on my device that is)
     if(!*dictionary)
         return NULL;
 
     int cmp = strcmp(key, (*dictionary)->key);
 
     if(cmp == 0){
-        void *result = &(*dictionary)->data;
+        void *result = (*dictionary)->data;
+        // Type cast to remove const, not sure about this...
+        free((char *)(*dictionary)->key);
         // If they are both NULL, it will be set to right, that is to NULL.
         if(!(*dictionary)->left){
+            free(*dictionary);
             *dictionary = (*dictionary)->right;
-        }else if(!(*dictionary)->left){
+        }else if(!(*dictionary)->right){
+            free(*dictionary);
             *dictionary = (*dictionary)->left;
         }else{
             T_DICTIONARY *what;
             T_DICTIONARY **where = dictionary;
             if(key[0] % 2){ // Trying to make it at least somewhat balanced
-                what = (*dictionary)->left;
-                *dictionary = (*dictionary)->left;
-                while((*where)->right)
+                what = (*dictionary)->right;
+                T_DICTIONARY *left = (*dictionary)->left;
+                free(*dictionary);
+                *dictionary = left;
+                while(*where)
                     where = &(*where)->right;
             }else{
                 what = (*dictionary)->left;
-                *dictionary = (*dictionary)->right;
-                while((*where)->left)
+                T_DICTIONARY *right = (*dictionary)->right;
+                free(*dictionary);
+                *dictionary = right;
+                while(*where)
                     where = &(*where)->left;
             }
             *where = what;
@@ -200,9 +206,30 @@ void *DictionaryRemove(T_DICTIONARY **dictionary, const char *key){
 
     if(cmp < 0)
         return DictionaryRemove(&(*dictionary)->left, key);
-
     if(cmp > 0)
         return DictionaryRemove(&(*dictionary)->right, key);
-
     return NULL; // For the warnings (I want the ifs to look the way they do)
+}
+
+int removeSomethingImpl(T_DICTIONARY **dictionary, void **value){
+    if(!(*dictionary))
+        return 0;
+
+    if(removeSomethingImpl(&(*dictionary)->left, value))
+        return 1;
+
+    if(removeSomethingImpl(&(*dictionary)->right, value))
+        return 1;
+
+    *value = (*dictionary)->data;
+    free((char *)(*dictionary)->key);
+    free(*dictionary);
+    *dictionary = NULL;
+    return 1;
+}
+
+void *DictionaryRemoveSomething(T_DICTIONARY **dictionary){
+    void *result = NULL;
+    removeSomethingImpl(dictionary, &result);
+    return result;
 }
