@@ -42,6 +42,9 @@ void **DictionaryGet(T_DICTIONARY **dictionary, const char *key);
 
 // Similar to Get but the corresponding node gets deleted.
 // It is the responsibility of the caller to dispose of the data.
+// NOTE: this potentialy makes the tree rather poorly optimized. It is
+// recommended to DictionaryOptimize it after removing a considerable
+// amount of nodes.
 void *DictionaryRemove(T_DICTIONARY **dictionary, const char *key);
 
 // Similar to Remove, but the key is undefined. Removes nothing from
