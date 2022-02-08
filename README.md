@@ -36,6 +36,32 @@ neovládám úplně dokonale a tak se radši nebudu snažit nic vysvětlovat.
 dokumentace na téma hlavičkových souborů. Jinak předpokládám, že v předmětu
 PA2 bude vše objasněno.
 
+### Nuance práce s makrem `assert`
+
+Některé kontroly pomocí makra `assert` by zásadně zpomalovaly běh programu.
+Proto knihovna `assert.h` umožňuje toto makro deaktivovat pomocí definice
+symbolické konstandy `NDEBUG`. Toho se dá dosáhnout takto:
+
+```c
+#define NDEBUG
+// Knihovnu je potreba vlozit po definici:
+#include <assert.h>
+```
+
+V tomto projektu je ale potřeba řídit tuto funkci externě, aby bylo možné
+automaticky vytvořit build s asserty, nebo bez nich. Překladač `gcc` použitý
+ve skriptu `build.sh` podporuje definici simbolických konstant pomocí přepínače `-D`, který funguje následovně:
+
+```bash
+# Jednoduché přepínače
+gcc -D__PROGTEST__ soubor.c
+gcc -DNDEBUG soubor.c
+
+# Konstanty s hodnotou
+gcc -DCOUNT_OF_SOMETHING=5 soubor.c
+gcc -DMY_NAME=\"Jmeno Prijmeni\"
+```
+
 ### Práce se souborem
 
 Textová adventure hra by asi nebyla moc zábavná, pokud by neukládala váš
