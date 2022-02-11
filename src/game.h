@@ -23,10 +23,4 @@ void GameSave(T_GAME *game, const char *name);
 // no longer needed.
 void GameDone(T_GAME * game);
 
-// Process one command from the user and
-// dispose of it. Returns a logical value
-// stating whether the game should continue
-// or not for the main loop.
-int GameProcessCommand(char *command);
-
 #endif // GAME_H
