@@ -47,8 +47,6 @@ void insertLeft(T_LIST_NODE *what, T_LIST_NODE *where){
             where->prev->next = what;
         what->prev = where->prev;
         where->prev = what;
-    }else{
-        what->prev = NULL;
     }
     what->next = where;
 }
@@ -61,14 +59,14 @@ void insertRight(T_LIST_NODE *what, T_LIST_NODE *where){
             where->next->prev = what;
         what->next = where->next;
         where->next = what;
-    }else{
-        what->next = NULL;
     }
     what->prev = where;
 }
 
 void ListInsert(T_LIST *list, void *data, int index){
     T_LIST_NODE *node = malloc(sizeof(T_LIST_NODE));
+    node->next = node->prev = NULL;
+    node->data = data;
     // Again using while(1) to make it easier. I am sorry.
 
     if(index >= 0){
