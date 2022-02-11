@@ -3,3 +3,6 @@ build
 
 # my VS Code settings
 .vscode
+
+# The game saves
+.saves
