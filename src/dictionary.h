@@ -4,6 +4,9 @@
 // Introduce the FILE struct for serialization.
 #include <stdio.h>
 
+// For listing the keys.
+#include "list.h"
+
 // A dictionary that lets us retrieve arbitrary
 // void * data using a string identifier. Useful
 // in general, but mainly for serialization.
@@ -70,5 +73,10 @@ void *DictionarySerialize(FILE *destination);
 // An example that works with most linux installs should be the state
 // at tag v0.0.1
 void DictionaryOptimize(T_DICTIONARY **dictionary);
+
+// Returns a new linked list containing all of the keys. As a bonus
+// the will actually be sorted in ascending order, which is convenient
+// for displaying to th user.
+T_LIST *DictionaryListKeys(T_DICTIONARY **dictionary);
 
 #endif // DICTIONARY_H

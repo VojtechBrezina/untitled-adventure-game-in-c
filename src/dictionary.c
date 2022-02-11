@@ -230,3 +230,22 @@ void *DictionaryRemoveSomething(T_DICTIONARY **dictionary){
     removeSomethingImpl(dictionary, &result);
     return result;
 }
+
+// A recursive implementation helper as usual.
+void listKeysImpl(T_DICTIONARY *dictionary, T_LIST *list){
+    if(!dictionary)
+        return;
+
+    if(dictionary->left)
+        listKeysImpl(dictionary->left, list);
+    ListInsert(list, (char *)dictionary->key, -1);
+    if(dictionary->right)
+        listKeysImpl(dictionary->right, list);
+}
+
+T_LIST *DictionaryListKeys(T_DICTIONARY **dictionary){
+    T_LIST *result = malloc(sizeof(T_LIST));
+    ListInit(result);
+    listKeysImpl(*dictionary, result);
+    return result;
+}
