@@ -24,12 +24,16 @@ void ListInit(T_LIST *list);
 void **ListIndex(T_LIST *list, int index);
 
 // Insert the data at the given index. Negative indexing
-// works here as well. If the index is out of range, it just
-// adds it to the side, where it left, but you can say
-// "undefined behavior" if that makes you more comfortable.
+// works here as well. If the index is out of range, it
+// does some undefined behavior, just don't do it.
 // No special functions to adding to either side needed,
 // Just insert to 0 and -1.
 void ListInsert(T_LIST *list, void *data, int index);
+
+// Remove the indexed node and get the data assocated with it.
+// Again rather undefined for invalid indexes. It will return
+// NULL though.
+void *ListRemove(T_LIST *list, int index);
 
 // A helper function to make this task more obvious. Most useful
 // when decomposing the list in a similar way to the dictionary.

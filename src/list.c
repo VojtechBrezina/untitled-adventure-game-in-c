@@ -104,6 +104,40 @@ void ListInsert(T_LIST *list, void *data, int index){
     assert(!!list->head == !!list->tail);
 }
 
+void *ListRemove(T_LIST *list, int index){
+    T_LIST_NODE *node = list->head;
+    if(index >= 0){
+        for(int i = 0; i < index && node; i++)
+            node = node->next;
+    }else{
+        for(int i = -1; i > index && node; i--)
+            node = node->prev;
+    }
+
+    void *result = NULL;
+
+    if(node){
+        result = node->data;
+
+        if(node->prev)
+            node->prev->next = node->next;
+        else
+            list->head = node->next;
+
+        if(node->next)
+            node->next->prev = node->prev;
+        else
+            list->tail = node->prev;
+
+        free(node);
+    }
+
+    // If we are in debug mode do a basic integrity check.
+    assert(!!list->head == !!list->tail);
+
+    return result;
+}
+
 int ListHasItems(T_LIST *list){
     // If we are in debug mode do a basic integrity check.
     assert(!!list->head == !!list->tail);
